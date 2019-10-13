@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ticketing.Models;
 
 namespace Ticketing.Services
 {
-    public class TicketingService
+    public class TicketingService : ITicketingService
     {
         public IEnumerable<TicketInfo> GetAvailable()
         {
