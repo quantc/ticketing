@@ -1,24 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ticketing.Models;
+using Ticketing.Respositories;
 
 namespace Ticketing.Services
 {
     public class TicketingService : ITicketingService
     {
-        public IEnumerable<TicketInfo> GetAvailable()
+        public async Task<IEnumerable<TicketInfo>> GetAvailable(string eventName)
         {
-            // let's say there is always 100 available tickets
-            var allTickets = GetAll();
+            var repo = new TableRepository<TicketsPool>(); //use ioc
 
-            //var repo = ticketsRepository.GetBookedTickets() etc...
-            var bookedTickets = GetBooked();
+            var allTickets = await repo.GetAll(nameof(TicketsPool.EventName), new List<string> { eventName });
 
-            var remainingTickets = allTickets
+            var result = allTickets
                 .GroupBy(ticket => ticket.Category)
                 .Select(group => new TicketInfo { TicketCategory = group.Key.ToString(), Count = group.Count() });
 
-            return remainingTickets;
+            return result;
         }
 
         private IEnumerable<Ticket> GetAll()

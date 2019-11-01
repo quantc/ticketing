@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ticketing.Models;
 using Ticketing.Services;
 
@@ -18,11 +19,11 @@ namespace Ticketing.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<TicketInfo> GetAvailable()
+        public async Task<IEnumerable<TicketInfo>> GetAvailable(string eventName)
         {
-             var service = new TicketingService();
+            var ticketService = new TicketingService();
 
-            return service.GetAvailable();
+            return await ticketService.GetAvailable(eventName);
         }
 
         [HttpPost]
