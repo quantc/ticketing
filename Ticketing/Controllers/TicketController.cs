@@ -1,35 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ticketing.CQRS;
 using Ticketing.Models;
 using Ticketing.Services;
 
 namespace Ticketing.Controllers
 {
-    [ApiController]
+    [AllowAnonymous]
     [Route("api/[controller]")]
-    public class TicketController : ControllerBase
+    [ApiController]
+    public class TicketController : BaseController
     {
-        private readonly ILogger<TicketController> _logger;
-
-        public TicketController(ILogger<TicketController> logger)
+        public TicketController(ICommandDispatcher commandDispatcher, ILogger logger) : base(commandDispatcher, logger)
         {
-            _logger = logger;
-        }
+        }   
 
         [HttpGet]
+        [Route("getAvailable")]
         public async Task<IEnumerable<TicketInfo>> GetAvailable(string eventName)
         {
             var ticketService = new TicketingService();
+            Logger.LogError("sssss");
 
             return await ticketService.GetAvailable(eventName);
         }
 
         [HttpPost]
-        public IActionResult Book(BookTicket ticket)
+        [Route("book")]
+        public async Task<IActionResult> Book(BookTicket ticket)
         {
-            // puts the ticket on the queue
+            var ticketService = new TicketingService();
+
+            await ticketService.BookTicket(ticket);
 
             return Ok();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Ticketing.Enums;
 
 namespace Ticketing.Models
 {
@@ -14,12 +15,5 @@ namespace Ticketing.Models
         public int Count { get; set; }
         //public DateTime EventDate { get; set; } // both could be just replaces with Event object
         //public string EventName { get; set; }
-    }
-
-    public enum TicketCategory
-    {
-        SittingStage,
-        StandingStage,
-        StandingOpen
-    }
+    }   
 }

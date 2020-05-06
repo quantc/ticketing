@@ -1,13 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ticketing.Enums;
 using Ticketing.Models;
-using Ticketing.Respositories;
+using Ticketing.Repositories;
 
 namespace Ticketing.Services
 {
     public class TicketingService : ITicketingService
     {
+        public async Task BookTicket(BookTicket ticket)
+        {
+            var repo = new QueueRepository(QueueName.RequestedToBook);
+            var serializer = new QueueMessageSerializer(); // lifecycle na single 
+            
+            await repo.Add(serializer.Serialize(ticket));
+        }
+
         public async Task<IEnumerable<TicketInfo>> GetAvailable(string eventName)
         {
             var repo = new TableRepository<TicketsPool>(); //use ioc
@@ -19,22 +28,6 @@ namespace Ticketing.Services
                 .Select(group => new TicketInfo { TicketCategory = group.Key.ToString(), Count = group.Count() });
 
             return result;
-        }
-
-        private IEnumerable<Ticket> GetAll()
-        {
-            var standingStage = Enumerable.Range(1, 60).Select(x => new Ticket { Category = TicketCategory.StandingStage, Price = 10 });
-            var sittingStage = Enumerable.Range(1, 40).Select(x => new Ticket { Category = TicketCategory.SittingStage, Price = 20 });
-
-            return standingStage.Concat(sittingStage);
-        }
-
-        private IEnumerable<Ticket> GetBooked()
-        {
-            var standingStage = Enumerable.Range(1, 10).Select(x => new Ticket { Category = TicketCategory.StandingStage });
-            var sittingStage = Enumerable.Range(1, 10).Select(x => new Ticket { Category = TicketCategory.SittingStage });
-
-            return standingStage.Concat(sittingStage);
         }
     }
 }

@@ -7,5 +7,6 @@ namespace Ticketing.Services
     public interface ITicketingService
     {
         Task<IEnumerable<TicketInfo>> GetAvailable(string eventName);
+        Task BookTicket(BookTicket ticket);
     }
 }

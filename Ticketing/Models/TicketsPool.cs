@@ -1,5 +1,4 @@
-﻿using System;
-using Ticketing.Attributes;
+﻿using Ticketing.Attributes;
 
 namespace Ticketing.Models
 {
@@ -18,15 +17,24 @@ namespace Ticketing.Models
                 PartitionKey = eventName;
             }
         }
-        public TicketCategory Category
+        public string Category
         {
-            get => (TicketCategory)Enum.Parse(typeof(TicketCategory), ticketCategory, true);
+            get => ticketCategory;
             set
             {
-                ticketCategory = value.ToString();
+                ticketCategory = value;
                 RowKey = ticketCategory;
             }
         }
+        //public TicketCategory Category
+        //{
+        //    get => (TicketCategory)Enum.Parse(typeof(TicketCategory), ticketCategory, true);
+        //    set
+        //    {
+        //        ticketCategory = value.ToString();
+        //        RowKey = ticketCategory;
+        //    }
+        //}
 
         public int CountAvailable { get; set; }
         public decimal Price { get; set; }

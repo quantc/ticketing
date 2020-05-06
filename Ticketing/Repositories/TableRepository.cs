@@ -1,15 +1,15 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Ticketing.Attributes;
 using Ticketing.Extensions;
+using Ticketing.Repositories.Interfaces;
 using Ticketing.Services;
 
-namespace Ticketing.Respositories
+namespace Ticketing.Repositories
 {
-    public class TableRepository<T> : ITableRepostitory<T> where T : TableEntity, new()
+    public class TableRepository<T> : ITableRepository<T> where T : TableEntity, new()
     {
         private readonly CloudTable table;
 
@@ -22,9 +22,25 @@ namespace Ticketing.Respositories
             table.CreateIfNotExistsAsync();
         }
 
+        public async Task CreateBatch(List<T> objects)
+        {
+            TableBatchOperation batchOperation = new TableBatchOperation();
+
+            foreach (var obj in objects)
+            {
+                batchOperation.Insert(obj);
+            }            
+
+            await table.ExecuteBatchAsync(batchOperation);
+        }
+
         public async Task Create(T obj)
         {
-            throw new NotImplementedException();
+            await AssertTableExists();
+
+            var operation = TableOperation.Insert(obj);
+
+            await table.ExecuteAsync(operation);    
         }
 
         public async Task<List<T>> GetAll()
@@ -43,6 +59,15 @@ namespace Ticketing.Respositories
             }
 
             return await table.ExecuteQueryAsync(query);
+        }
+
+        private async Task AssertTableExists()
+        {
+            var tableExists = await table.ExistsAsync();
+            if (!tableExists)
+            {
+                await table.CreateIfNotExistsAsync();
+            }
         }
     }
 }

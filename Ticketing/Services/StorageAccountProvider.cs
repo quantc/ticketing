@@ -21,12 +21,6 @@ namespace Ticketing.Services
               "ticketsystemstorage", "bvJiQvDFONxW6egScN6CqeFtzUJupvyICjM4jPzfaUpn7+3bd1FteGdWRwYKjOZDD6xFmtIYawLYyIw7N8Em4w=="), true);
         }
 
-        public static CloudStorageAccount Instance
-        {
-            get
-            {
-                return instance.StorageAccount;
-            }
-        }
+        public static CloudStorageAccount Instance => instance.StorageAccount;
     }
 }

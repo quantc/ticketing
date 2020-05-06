@@ -1,4 +1,6 @@
-﻿namespace Ticketing.Models
+﻿using Ticketing.Enums;
+
+namespace Ticketing.Models
 {
     public class BookTicket
     {
