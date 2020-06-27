@@ -19,7 +19,8 @@ namespace Ticketing.Repositories
 
         public async Task Add(string content)
         {
-            CloudQueueMessage message = new CloudQueueMessage(content);
+            // ToDo: Probably it would be good to strongly type the object is added to the queue
+            var message = new CloudQueueMessage(content);
             await queue.AddMessageAsync(message);
         }
     }

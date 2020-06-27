@@ -11,10 +11,10 @@ namespace Ticketing.Services
     {
         public async Task BookTicket(BookTicket ticket)
         {
-            var repo = new QueueRepository(QueueName.RequestedToBook);
+            var queue = new QueueRepository(QueueName.RequestedToBook);
             var serializer = new QueueMessageSerializer(); // lifecycle na single 
             
-            await repo.Add(serializer.Serialize(ticket));
+            await queue.Add(serializer.Serialize(ticket));
         }
 
         public async Task<IEnumerable<TicketInfo>> GetAvailable(string eventName)

@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Ticketing.CQRS.QueryHandlers;
+using Ticketing.CQRS.Queries;
 
 namespace Ticketing.Cqrs
 {

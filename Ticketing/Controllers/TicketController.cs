@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ticketing.Cqrs.Queries;
 using Ticketing.CQRS;
+using Ticketing.Cqrs.Commands;
 using Ticketing.Models;
-using Ticketing.Services;
 
 namespace Ticketing.Controllers
 {
@@ -20,22 +20,17 @@ namespace Ticketing.Controllers
 
         [HttpGet]
         [Route("getAvailable")]
-        public async Task<IEnumerable<TicketInfo>> GetAvailable(string eventName)
+        public async Task<IActionResult> GetAvailable(string eventName)
         {
-            var ticketService = new TicketingService();
-            Logger.LogError("sssss");
-
-            return await ticketService.GetAvailable(eventName);
+            var result = await QueryDispatcher.Execute(new GetAvailableTicketsQuery {EventName = eventName});
+            return Ok(result);
         }
 
         [HttpPost]
         [Route("book")]
         public async Task<IActionResult> Book(BookTicket ticket)
         {
-            var ticketService = new TicketingService();
-
-            await ticketService.BookTicket(ticket);
-
+            await CommandDispatcher.Execute(new BookTicketCommand(ticket.EventName, ticket.Category, ticket.Count));
             return Ok();
         }
     }

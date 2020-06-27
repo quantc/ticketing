@@ -1,6 +1,8 @@
-﻿namespace Ticketing.CQRS.Queries
+﻿using MediatR;
+
+namespace Ticketing.CQRS.Queries
 {
-    public interface IQuery
+    public interface IQuery<out TResponse> : IRequest<TResponse>
     {
     }
 }

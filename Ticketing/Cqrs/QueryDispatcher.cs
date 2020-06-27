@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using Ticketing.CQRS.QueryHandlers;
+using Ticketing.CQRS.Queries;
 
 namespace Ticketing.Cqrs
 {
@@ -14,7 +14,8 @@ namespace Ticketing.Cqrs
             this.mediator = mediator;
         }
 
-        public Task<TResponse> Execute<TResponse>(IQuery<TResponse> query, CancellationToken cancellationToken = new CancellationToken())
+        public Task<TResponse> Execute<TResponse>(IQuery<TResponse> query,
+            CancellationToken cancellationToken = new CancellationToken())
         {
             return mediator.Send(query, cancellationToken);
         }

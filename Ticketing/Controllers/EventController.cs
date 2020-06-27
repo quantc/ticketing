@@ -28,7 +28,6 @@ namespace Ticketing.Controllers
             return Ok();
         }
 
-
         [HttpGet]
         [Route("get")]
         public async Task<IActionResult> Get()
@@ -36,6 +35,5 @@ namespace Ticketing.Controllers
             var result = await QueryDispatcher.Execute(new GetEventsQuery());
             return Ok(result);
         }
-
     }
 }

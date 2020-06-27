@@ -4,7 +4,8 @@ using Ticketing.Models;
 
 namespace Ticketing.Cqrs.Queries
 {
-    public class GetEventsQuery : IQuery<IEnumerable<TicketsPool>>
+    public class GetAvailableTicketsQuery : IQuery<IEnumerable<TicketInfo>>
     {
+        public string EventName { get; set; }
     }
 }
